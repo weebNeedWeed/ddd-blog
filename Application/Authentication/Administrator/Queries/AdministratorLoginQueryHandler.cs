@@ -1,20 +1,20 @@
-namespace Application.Authentication.Queries;
+namespace Application.Authentication.Administrator.Queries;
 
-using Application.Common.Persistence;
+using Application.Common.Interfaces.Persistence;
 using Domain.Common.Errors;
 using ErrorOr;
 using MediatR;
 
-public class LoginQueryHandler : IRequestHandler<LoginQuery, ErrorOr<LoginResult>>
+public class AdministratorLoginQueryHandler : IRequestHandler<AdministratorLoginQuery, ErrorOr<AdministratorLoginResult>>
 {
     private readonly IAdministratorRepository _administratorRepository;
 
-    public LoginQueryHandler(IAdministratorRepository administratorRepository)
+    public AdministratorLoginQueryHandler(IAdministratorRepository administratorRepository)
     {
         this._administratorRepository = administratorRepository;
     }
 
-    public async Task<ErrorOr<LoginResult>> Handle(LoginQuery query, CancellationToken cancellationToken)
+    public async Task<ErrorOr<AdministratorLoginResult>> Handle(AdministratorLoginQuery query, CancellationToken cancellationToken)
     {
         var admin = await this._administratorRepository.GetByEmailAsync(query.Email);
         if (admin is null)
@@ -27,6 +27,6 @@ public class LoginQueryHandler : IRequestHandler<LoginQuery, ErrorOr<LoginResult
             return Errors.Authentication.InvalidCredentials;
         }
 
-        return new LoginResult(admin, "token");
+        return new AdministratorLoginResult(admin, "token");
     }
 }

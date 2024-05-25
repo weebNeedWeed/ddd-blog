@@ -1,4 +1,4 @@
-namespace Infrastructure.Persistence;
+namespace Infrastructure.Persistence.Common;
 
 public sealed class DatabaseOptions
 {

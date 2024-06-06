@@ -2,13 +2,19 @@ using Api.Common;
 using Application;
 using Carter;
 using Infrastructure;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 {
+    builder.Host.UseSerilog((context, config) =>
+    {
+        config.ReadFrom.Configuration(context.Configuration);
+    });
+
     builder.Services
-        .AddPresentation()
+        .AddInfrastructure(builder.Configuration)
         .AddApplication()
-        .AddInfrastructure(builder.Configuration);
+        .AddPresentation();
 }
 
 var app = builder.Build();
@@ -20,5 +26,7 @@ var app = builder.Build();
     }
     
     app.MapCarter();
+    app.UseSerilogRequestLogging();
+    app.UseExceptionHandler("/error");
     app.Run();
 }

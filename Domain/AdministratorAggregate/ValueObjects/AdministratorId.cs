@@ -10,6 +10,11 @@ public class AdministratorId(Guid value) : ValueObject
     {
         return new AdministratorId(Guid.NewGuid());
     }
+
+    public static AdministratorId Create(Guid id)
+    {
+        return new AdministratorId(id);
+    }
     
     protected override IEnumerable<object> GetEqualityComponents()
     {

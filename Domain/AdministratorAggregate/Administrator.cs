@@ -64,6 +64,27 @@ public class Administrator : AggregateRoot<AdministratorId>
             lastLoginAt);
     }
 
+    public static Administrator Create(
+        Guid id,
+        string userName,
+        string email,
+        string hashedPassword,
+        string firstName,
+        string lastName,
+        DateTime createdAt,
+        DateTime? lastLoginAt)
+    {
+        return new Administrator(
+            AdministratorId.Create(id),
+            userName,
+            email,
+            hashedPassword,
+            firstName,
+            lastName,
+            createdAt,
+            lastLoginAt);
+    }
+
     public void AddRole(RoleId roleId)
     {
         this._roles.Add(roleId);

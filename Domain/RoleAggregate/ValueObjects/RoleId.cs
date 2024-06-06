@@ -11,6 +11,11 @@ public class RoleId(Guid value) : ValueObject
         return new RoleId(Guid.NewGuid());
     }
     
+    public static RoleId Create(Guid id)
+    {
+        return new RoleId(id);
+    }
+    
     protected override IEnumerable<object> GetEqualityComponents()
     {
         yield return this.Value;

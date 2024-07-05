@@ -1,5 +1,6 @@
 namespace Api.Endpoints;
 
+using Api.Extensions;
 using Application.Authentication.Administrator.Commands;
 using Carter;
 using Contracts.Authentication.Administrator;
@@ -19,8 +20,8 @@ public class AdminAuthenticationEndpoints : ICarterModule
         var result = await mediator.Send(command);
 
         return result.Match(
-            val => Results.Ok(),
-            err => Results.BadRequest(err));
+            val => Results.Ok(val),
+            err => ResultsExtensions.Errors(err));
     }
     
     public void AddRoutes(IEndpointRouteBuilder app)

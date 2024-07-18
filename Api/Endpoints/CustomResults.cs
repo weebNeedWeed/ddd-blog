@@ -1,9 +1,8 @@
-namespace Api.Extensions;
+namespace Api.Endpoints;
 
 using ErrorOr;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 
-public static class ResultsExtensions
+public static class CustomResults
 {
     public static IResult Errors(List<Error> errors)
     {
@@ -27,7 +26,8 @@ public static class ResultsExtensions
     {
         var (title, statusCode) = error.Type switch
         {
-            ErrorType.Unauthorized => ("Unauthorized", StatusCodes.Status401Unauthorized),
+            ErrorType.Unauthorized => (error.Description, StatusCodes.Status401Unauthorized),
+            ErrorType.Conflict => (error.Description, StatusCodes.Status409Conflict),
             _ => ("An error occured during processing your request.", StatusCodes.Status500InternalServerError),
         };
 

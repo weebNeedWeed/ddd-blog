@@ -33,7 +33,8 @@ public class AdministratorRepository : IAdministratorRepository
         var admin = await this._adminCollection
             .Find(x => x.UserName == userName)
             .FirstOrDefaultAsync();
-        return admin is null ? null : this._mapper.Map<Administrator>(admin);
+        var x = this._mapper.Map<Administrator>(admin);
+        return admin is null ? null : x;
     }
 
     public async Task<bool> AddAsync(Administrator admin)

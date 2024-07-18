@@ -8,12 +8,12 @@ public class AuthenticationMappingConfig : IRegister
 {
     public void Register(TypeAdapterConfig config)
     {
-        config.ForType<Administrator, AdministratorDto>()
+        config.NewConfig<Administrator, AdministratorDto>()
             .Map(dest => dest.Id, src => src.Id.Value)
             .Map(dest => dest.Roles, src => src.Roles.Select(x => x.Value));
 
-        config.ForType<AdministratorDto, Administrator>()
-            .ConstructUsing(src => Administrator.Create(
+        config.NewConfig<AdministratorDto, Administrator>()
+            .MapWith(src => Administrator.Create(
                 src.Id,
                 src.UserName,
                 src.Email,

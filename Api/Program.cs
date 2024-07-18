@@ -6,6 +6,8 @@ using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 {
+    builder.Services.AddControllers();
+    
     builder.Host.UseSerilog((context, config) =>
     {
         config.ReadFrom.Configuration(context.Configuration);
@@ -28,5 +30,11 @@ var app = builder.Build();
     app.MapCarter();
     app.UseSerilogRequestLogging();
     app.UseExceptionHandler("/error");
+
+    app.MapControllers();
+    
+    app.UseAuthentication();
+    app.UseAuthorization();
+    
     app.Run();
 }

@@ -1,7 +1,7 @@
 namespace Api.Endpoints;
 
-using Api.Extensions;
 using Application.Authentication.Administrator.Commands;
+using Application.Authentication.Administrator.Queries;
 using Carter;
 using Contracts.Authentication.Administrator;
 using MapsterMapper;
@@ -9,9 +9,14 @@ using MediatR;
 
 public class AdminAuthenticationEndpoints : ICarterModule
 {
-    public static IResult Login()
+    public static async Task<IResult> Login(AdministratorLoginRequest request, IMapper mapper, ISender mediator)
     {
-        throw new Exception("Hello");
+        var query = mapper.Map<AdministratorLoginQuery>(request);
+        var loginResult = await mediator.Send(query);
+
+        return loginResult.Match(
+            val => Results.Ok(val),
+            errors => CustomResults.Errors(errors));
     }
     
     public static async Task<IResult> Register(AdministratorRegisterRequest request, ISender mediator, IMapper mapper)
@@ -21,14 +26,14 @@ public class AdminAuthenticationEndpoints : ICarterModule
 
         return result.Match(
             val => Results.Ok(val),
-            err => ResultsExtensions.Errors(err));
+            err => CustomResults.Errors(err));
     }
     
     public void AddRoutes(IEndpointRouteBuilder app)
     {
         var group = app.MapGroup("/api/auth/admin");
 
-        group.MapGet("/login", Login);
+        group.MapPost("/login", Login);
         
         group.MapPost("/register", Register);
     }

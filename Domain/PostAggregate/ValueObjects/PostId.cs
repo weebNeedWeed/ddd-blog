@@ -6,9 +6,9 @@ public class PostId : ValueObject
 {
     private PostId(Guid value) => this.Value = value;
     
-    public Guid Value { get; private init; }
+    public Guid Value { get; }
     
-    public PostId CreateUnique() => new PostId(Guid.NewGuid());
+    public static PostId CreateUnique() => new PostId(Guid.NewGuid());
     
     protected override IEnumerable<object> GetEqualityComponents()
     {

@@ -1,10 +1,8 @@
 namespace Infrastructure;
 
-using Application.Common.Interfaces.Authentication;
 using Application.Common.Interfaces.Persistence;
 using Application.Common.Interfaces.Services;
 using Infrastructure.Authentication;
-using Infrastructure.Common.Mapping;
 using Infrastructure.Persistence.Administrator;
 using Infrastructure.Persistence.Common;
 using Infrastructure.Services;
@@ -22,9 +20,7 @@ public static class DependencyInjection
 
         services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
         
-        services.AddSingleton<IPasswordHashingService, PasswordHashingService>();
-
-        services.AddMapping();
+        services.AddAuth(configuration);
         
         return services;
     }

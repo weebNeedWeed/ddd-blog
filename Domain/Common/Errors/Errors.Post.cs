@@ -4,7 +4,7 @@ using ErrorOr;
 
 public partial class Errors
 {
-    public static class Post
+    public static class Posts
     {
         public static Error InvalidOrderNumber => Error.Conflict(
             code: "Post.InvalidOrderNumber", 

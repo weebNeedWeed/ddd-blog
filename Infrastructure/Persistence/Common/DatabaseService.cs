@@ -1,6 +1,7 @@
 namespace Infrastructure.Persistence.Common;
 
 using Microsoft.Extensions.Options;
+using MongoDB.Bson;
 using MongoDB.Driver;
 
 public sealed class DatabaseService

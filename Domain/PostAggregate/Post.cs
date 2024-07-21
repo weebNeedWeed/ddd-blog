@@ -19,6 +19,8 @@ public class Post : AggregateRoot<PostId>
         Image thumbnailImage,
         Image coverImage,
         AdministratorId administratorId,
+        DateTime createdAt,
+        DateTime updatedAt,
         List<Block> blocks)
         : base(id)
     {
@@ -27,6 +29,8 @@ public class Post : AggregateRoot<PostId>
         this.CoverImage = coverImage;
         this.ThumbnailImage = thumbnailImage;
         this.AdministratorId = administratorId;
+        this.CreatedAt = createdAt;
+        this.UpdatedAt = updatedAt;
         this._blocks.AddRange(blocks);
     }
 
@@ -37,8 +41,12 @@ public class Post : AggregateRoot<PostId>
     public Image ThumbnailImage { get; }
 
     public Image CoverImage { get; }
-    
+
     public AdministratorId AdministratorId { get; }
+
+    public DateTime CreatedAt { get; }
+
+    public DateTime UpdatedAt { get; }
 
     public IReadOnlyList<Block> Blocks => this._blocks.AsReadOnly();
 
@@ -48,14 +56,16 @@ public class Post : AggregateRoot<PostId>
         Image thumbnailImage,
         Image coverImage,
         AdministratorId administratorId,
+        DateTime createdAt,
+        DateTime updatedAt,
         List<Block> blocks)
     {
         // Validate the order of blocks
         if (!ValidateBlockListOrderNumber(blocks))
         {
-            return Errors.Post.InvalidOrderNumber;
+            return Errors.Posts.InvalidOrderNumber;
         }
-        
+
         return new Post(
             PostId.CreateUnique(),
             title,
@@ -63,6 +73,8 @@ public class Post : AggregateRoot<PostId>
             thumbnailImage,
             coverImage,
             administratorId,
+            createdAt, 
+            updatedAt,
             blocks);
     }
 
@@ -73,7 +85,7 @@ public class Post : AggregateRoot<PostId>
 
     private static bool ValidateBlockListOrderNumber(List<Block> blockList)
     {
-        blockList.Sort((x, y) => 
+        blockList.Sort((x, y) =>
             x.OrderNumber.CompareTo(y.OrderNumber));
 
         for (var index = 1; index < blockList.Count; ++index)

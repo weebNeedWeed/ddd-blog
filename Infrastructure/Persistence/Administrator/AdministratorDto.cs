@@ -6,6 +6,7 @@ using MongoDB.Bson.Serialization.Attributes;
 public class AdministratorDto
 {
     [BsonId]
+    [BsonGuidRepresentation(GuidRepresentation.Standard)]
     public Guid Id { get; set; }
     
     public string UserName { get; set; } = null!;
@@ -17,12 +18,12 @@ public class AdministratorDto
     public string FirstName { get; set; } = null!;
 
     public string LastName { get; set; } = null!;
+    
+    [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
-    [BsonRepresentation(BsonType.DateTime)]
-    public DateTime CreatedAt { get; set; }
-
-    [BsonRepresentation(BsonType.DateTime)]
-    public DateTime? LastLoginAt { get; set; }
-
+    [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
+    public DateTime? LastLoginAt { get; set; } = null;
+    
     public List<Guid> Roles { get; set; } = new();
 }

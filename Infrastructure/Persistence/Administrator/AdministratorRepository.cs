@@ -5,6 +5,9 @@ using Domain.AdministratorAggregate;
 using Infrastructure.Persistence.Common;
 using MapsterMapper;
 using Microsoft.Extensions.Logging;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization;
+using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Driver;
 
 public class AdministratorRepository : IAdministratorRepository
@@ -15,6 +18,16 @@ public class AdministratorRepository : IAdministratorRepository
     
     public AdministratorRepository(DatabaseService database, IMapper mapper, ILogger<AdministratorRepository> logger)
     {
+        BsonClassMap.RegisterClassMap<AdministratorDto>(classMap =>
+        {
+            var arraySerializer = new ArraySerializer<Guid>(
+                new GuidSerializer(GuidRepresentation.Standard));
+            
+            classMap.AutoMap();
+            classMap.MapMember(x => x.Roles)
+                .SetSerializer(arraySerializer);
+        });
+        
         this._mapper = mapper;
         this._logger = logger;
         this._adminCollection = database.GetCollection<AdministratorDto>("Administrators");
